@@ -111,3 +111,126 @@ function flatten(arr) {
   return arr;
 }
 console.log(flatten(Array3));
+
+// ******************7、给 a b c 三个请求，希望c在a b获取后再请求******************
+// 方式一：promise.all
+function getA() {
+  return new Promise((resolve, reject) => {
+    setTimeout(() => {
+      console.log('Request A completed');
+      resolve('a');
+    }, 1000);
+  });
+}
+function getB() {
+  return new Promise((resolve, reject) => {
+    setTimeout(() => {
+      console.log('Request B completed');
+      resolve('b');
+    }, 2000);
+  });
+}
+function getC() {
+  return new Promise((resolve, reject) => {
+    setTimeout(() => {
+      console.log('Request C completed');
+      resolve('c');
+    }, 1000);
+  });
+}
+
+Promise.all([getA(), getB()]).then(
+  (res) => {
+    console.log('Both A and B are completed:' + res);
+    return getC();
+  }
+).then((res) => {
+  console.log('Request C is completed:' + res);
+}).catch((e) => {
+  console.log('Error occurred:' + e);
+});
+// 方式二：async await
+async function getABC() {
+  const resA = await getA();
+  const resB = await getB();
+  const resC = await getC();
+  console.log(resA, resB, resC);
+}
+getABC();
+// 方式三：js实现
+const fs = require('fs');
+let arr = [];
+function fn(data) {
+  arr.push(data);
+  if (arr.length === 2) {
+    // 执行c请求
+    console.log(arr);
+  }
+}
+
+fs.readFile('./a.txt', 'utf8', (err, data) => {
+  fn(data);
+});
+
+fs.readFile('./b.txt', 'utf8', (err, data) => {
+  fn(data);
+});
+
+// ******************8、发布订阅******************
+class EventEmitter {
+  constructor() {
+    this.events = {};
+  }
+  // 订阅事件
+  on(event, listener) {
+    if (!this.events[event]) {
+      this.events[event] = [];
+    }
+    this.events[event].push(listener);
+  }
+  // 取消订阅事件
+  off(event, listener) {
+    if (!this.events[event]) return;
+
+    this.events[event] = this.events[event].filter(l => l !== listener);
+  }
+
+  // 只订阅一次事件
+  once(event, listener) {
+    const onceListener = (...args) => {
+      listener(...args);
+      this.off(event, onceListener);
+    };
+    this.on(event, onceListener);
+  }
+
+  // 发布事件
+  emit(event, ...args) {
+    if (!this.events[event]) return;
+
+    this.events[event].forEach(listener => {
+      listener(...args);
+    });
+  }
+}
+
+// 使用示例
+const emitter = new EventEmitter();
+
+function responseToEvent(msg) {
+  console.log(msg);
+}
+// 订阅事件
+emitter.on('event1', responseToEvent);
+// 发布事件
+emitter.emit('event1', 'Event 1 triggered!');
+// 取消订阅事件
+emitter.off('event1', responseToEvent);
+// 再次尝试发布事件（不会有任何输出，因为已经取消订阅）
+emitter.emit('event1', 'This will not be logged.');
+// 使用一次性订阅
+emitter.once('event2', (msg) => console.log(msg));
+// 发布事件（触发一次）
+emitter.emit('event2', 'Event 2 triggered!');
+// 再次尝试发布事件（不会有任何输出，因为是一次性订阅）
+emitter.emit('event2', 'This will not be logged.');

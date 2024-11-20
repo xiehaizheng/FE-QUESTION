@@ -234,3 +234,45 @@ emitter.once('event2', (msg) => console.log(msg));
 emitter.emit('event2', 'Event 2 triggered!');
 // 再次尝试发布事件（不会有任何输出，因为是一次性订阅）
 emitter.emit('event2', 'This will not be logged.');
+
+// CSS开始
+// ******************9、介绍下BFC及其应用******************
+// 可参考：https://juejin.cn/post/7367290539982569510?searchId=20241119214231E80E1E0EA83D600B926E
+// 1、什么是BFC（独立布局环境 内部元素布局 与外部互不影响）
+// BFC（Block Formatting Context）即块级格式化上下文，是Web页面的CSS渲染模式，指定一个块级元素渲染的区域和规则
+
+// 2、BFC的触发条件
+// --设置浮动：float不为none
+// --overflow不为visible: 设置 auto、scroll、hidden
+// --绝对定位元素（position为absolute或fixed）
+// --display: flex 或 inline - block
+
+// 3、BFC的作用
+// -- 解决外边距垂直坍塌
+// -- 解决包含坍塌
+// -- 清除浮动（浮动的元素会脱离文档流会，这样会使得父元素高度没有被撑开）
+// -- 避免非浮动元素被浮动元素覆盖
+
+
+// ******************10、介绍下BFC、IFC、GFC、FFC******************
+// 参考：https://juejin.cn/post/7026276336687644680?searchId=20241119220438C240B9FC8F2C9D0F81DB
+// 1、IFC（Inline Formatting Context）行内 格式化上下文
+// 2、GFC（Grid Layout Formatting Context）网格布局 格式化上下文
+// 3、FFC（Flex Formatting Context）弹性布局 格式化上下文
+// 4、BFC（Block Formatting Context）块级 格式化上下文
+
+// ******************11、flex布局如何使用******************
+// display: flex;
+// flex-direction: 主轴
+// flex-wrap: 是否换行
+// flex-flow: flex-direction 和 flex-wrap 的简写形式, 默认为：row nowrap
+// justify-content: 主轴对齐方式
+// align-items: 交叉轴对齐方式
+// align-content: 多根轴线对齐方式
+
+// 子元素属性
+// order: 排列顺序 越小越靠前
+// flex-grow: 放大比例 默认为0
+// flex-shrink: 缩小比例 默认为1
+// flex-basis: 指定元素在主轴上的初始大小 默认为auto
+// flex: flex-grow、flex-shrink、flex-basis的简写 默认为0 1 auto

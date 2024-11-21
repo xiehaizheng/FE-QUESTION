@@ -276,3 +276,55 @@ emitter.emit('event2', 'This will not be logged.');
 // flex-shrink: 缩小比例 默认为1
 // flex-basis: 指定元素在主轴上的初始大小 默认为auto
 // flex: flex-grow、flex-shrink、flex-basis的简写 默认为0 1 auto
+
+
+// ****************** 12、分析比较 opacity: 0、visibility: hidden、display: none 优势和使用场景 ******************
+// -构造：
+// 1、display: none 完全消失 不占任何空间 不能点击
+// 2、visibility: hidden 不会消失 占空间 内容不可见 不能点击
+// 3、opacity: 0 占据空间 内容不可见 可以点击
+// -继承
+// 1、display: none 不会继承
+// 2、visibility: hidden 会继承
+// 3、opacity: 0 不会继承
+// -性能
+// 1、display: none 文档回流
+// 2、visibility: hidden 重绘 性能消耗较小
+// 3、opacity: 0 重绘 性能消耗较小
+
+// ******************13、如何使用CSS或js实现多行文本溢出省略效果，考虑兼容性******************
+// 1、CSS实现
+// --单行文本溢出省略
+// overflow: hidden;
+// text-overflow: ellipsis;
+// white-space: nowrap;
+
+// --多行文本溢出省略
+// display: -webkit-box;
+// -webkit-box-orient: vertical;
+// -webkit-line-clamp: 3; // 限制行数
+// overflow: hidden;
+// text-overflow: ellipsis;
+
+// --兼容性()
+// P {
+//   position: relative;
+//  line-height: 20px;
+//   /*设置容器高度为3倍行高就是显示3行*/
+//   height: 60px;
+//   overflow: hidden;
+// }
+
+// P::before {
+//   content: '...';
+//   position: absolute;
+//   bottom: 0;
+//   right: 0;
+//   padding-left: 40px;
+//   background: -webkit-linear-gradient(left, transparent, #fff 55%);
+//   background: -o-linear-gradient(right, transparent, #fff 55%);
+//   background: -moz-linear-gradient(right, transparent, #fff 55%);
+//   background: linear-gradient(to right, transparent, #fff 55%);  
+// }
+
+// 2、js实现
